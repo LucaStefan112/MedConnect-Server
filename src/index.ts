@@ -1,13 +1,18 @@
 const express = require("express");
 import mongoose from "mongoose";
+const dotenv = require("dotenv");
 
-const username = "M2";
-const password = "Bvq0cLqzUadzKcBF";
+if (dotenv.error) {
+  throw dotenv.error;
+}
+
+const { USERNAME, PASSWORD } = dotenv.config().parsed;
+
 const connectionString =
   "mongodb+srv://" +
-  username +
+  USERNAME +
   ":" +
-  password +
+  PASSWORD +
   "@db.i0bozci.mongodb.net/?retryWrites=true&w=majority";
 
 mongoose
