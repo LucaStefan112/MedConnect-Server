@@ -18,10 +18,10 @@ export function dbConnect() {
   mongoose
     .connect(connectionString)
     .then(() => {
-      console.log("Baza e sus, la dispozitia dvs.");
+      console.log("Successfully connected to database");
     })
     .catch((err) => {
       console.log(err);
-      console.log("Baza e jos, verifica cablajele!");
+      console.log("Failed to connect to database!");
     });
 }
