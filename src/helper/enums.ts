@@ -1,9 +1,9 @@
-export var AppointmentTypes = {
+export const AppointmentTypes = {
     Online: "online",
     Onsite: "onsite",
 };
 
-export var UserRoles = {
+export const UserRoles = {
     Patient: "patient",
     Doctor: "doctor",
     Nurse: "nurse",
