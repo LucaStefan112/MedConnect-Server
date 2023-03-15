@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 
+import { AppointmentTypes } from "../helper/enums";
+
 export interface IAppointment {
     patient: string;
     doctor: string;
     date: Date;
-    time: string;
     type: string;
-    link: string;
+    meetingLink: string;
 }
 
 export interface IAppointmentModel extends IAppointment, mongoose.Document { }
@@ -26,18 +27,15 @@ const appointmentSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    time: {
-        type: String,
-        required: true,
-    },
     type: {
         type: String,
         required: true,
-        enum: ["online", "face2face"],
+        enum: AppointmentTypes,
         default: "online",
     },
-    link: {
+    meetingLink: {
         type: String,
+        required: false,
     },
 });
 

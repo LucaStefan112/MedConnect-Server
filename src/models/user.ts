@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+import { UserRoles } from "../helper/enums";
+
 export interface IUser {
     fullName: string;
     email: string;
@@ -32,7 +34,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true,
-        enum: ["admin", "patient", "doctor", "nurse"],
+        enum: UserRoles,
         default: "patient",
     },
     dateOfBirth: {
