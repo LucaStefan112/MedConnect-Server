@@ -1,19 +1,26 @@
 import mongoose from "mongoose";
 import { dbConnect } from "./db/connection";
 const express = require("express");
-
-dbConnect();
-
 const app = express();
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/users", (req, res) => {
-  res.send("Hello Users!");
-});
+const start = async () => {
+  try {
+    await dbConnect();
 
-app.listen(3000, () => {
-  console.log("Example app listening on port 3000!");
-});
+    app.listen(3000, () => {
+      console.log("Example app listening on port 3000!");
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+start();
