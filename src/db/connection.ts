@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const dotenv = require("dotenv");
 
-export function dbConnect() {
+export async function dbConnect() {
   if (dotenv.error) {
     throw dotenv.error;
   }
@@ -15,7 +15,7 @@ export function dbConnect() {
     PASSWORD +
     "@db.i0bozci.mongodb.net/?retryWrites=true&w=majority";
 
-  mongoose
+  return mongoose
     .connect(connectionString)
     .then(() => {
       console.log("Successfully connected to database");
