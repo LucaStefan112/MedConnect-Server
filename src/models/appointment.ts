@@ -8,6 +8,7 @@ export interface IAppointment {
     date: Date;
     type: string;
     meetingLink: string;
+    isActive: boolean;
 }
 
 export interface IAppointmentModel extends IAppointment, mongoose.Document { }
@@ -36,6 +37,11 @@ const appointmentSchema = new mongoose.Schema({
     meetingLink: {
         type: String,
         required: false,
+    },
+    isActive: {
+        type: Boolean,
+        required: true,
+        default: true,
     },
 });
 
