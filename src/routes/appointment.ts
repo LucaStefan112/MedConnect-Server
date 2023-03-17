@@ -33,7 +33,7 @@ router.get("/:token", async (req, res) => {
 
   console.log(appointments);
   res.status(200);
-  res.send(appointments);
+  res.send({ succes: true, message: appointments });
 });
 
 router.post("/:token", async (req, res) => {
@@ -85,7 +85,7 @@ router.delete("/:token/:appId", async (req, res) => {
   }
   Appointment.findByIdAndRemove(appId);
   res.status(200);
-  res.send("Deleted appointment");
+  res.send({ succes: true, message: "Deleted appointment" });
 });
 
 module.exports = router;
