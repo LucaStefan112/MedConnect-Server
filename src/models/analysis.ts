@@ -1,31 +1,31 @@
 import mongoose from "mongoose";
-export interface IResults{
+export interface IAnalysis {
     name: string;
     result: number;
     unit: string;
     person: string;
 }
 
-export interface IPerson extends IResults, mongoose.Document { }
+export interface IPerson extends IAnalysis, mongoose.Document { }
 
-const resultsSchema= new mongoose.Schema({
-    name:{
+const analysisSchema = new mongoose.Schema({
+    name: {
         type: String,
         required: true,
     },
-    result:{
+    result: {
         type: Number,
         required: true,
     },
-    unit:{
+    unit: {
         type: String,
         required: true,
     },
-    person:{
+    person: {
         type: String,
         required: true,
         ref: "User",
     }
 })
 
-export default mongoose.model<IPerson>("Result", resultsSchema);
+export default mongoose.model<IPerson>("Analysis", analysisSchema);

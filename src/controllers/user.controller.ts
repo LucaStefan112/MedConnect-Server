@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 // models
 import User from "../models/user";
 import Appointment from "../models/appointment";
-import Result from "../models/results";
+import Analyse from "../models/analysis";
 
 // enums
 import { UserRoles, AppointmentTypes } from "../helper/enums";
@@ -16,9 +16,8 @@ import utils from "../helper/utils";
 export const getUser = async (req: Request, res: IBasicResponse) => {
     const userId = req.body.user._id;
 
-    console.log(userId);
     const user = await User.findOne({ _id: userId });
-    console.log("user\n\n", user);
+
     if (!user) {
         return res.status(404).send({ success: false, message: "User not found" });
     }
@@ -53,10 +52,10 @@ export const getAppointments = async (req: Request, res: IBasicResponse) => {
     }
 }
 
-export const getResults = async (req: Request, res: IBasicResponse) => {
+export const getAnalyses = async (req: Request, res: IBasicResponse) => {
     const userId = req.body.user._id;
     try {
-        const results = await Result.find({ person: userId });
+        const results = await Analyse.find({ person: userId });
         return res.status(200).send({ success: true, message: "Results found", results });
     } catch (error) {
         return res.status(500).send({ success: false, message: "Results not found", error });

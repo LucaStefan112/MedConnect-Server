@@ -2,12 +2,12 @@ import { Router } from 'express';
 const userRouter = Router();
 
 // controllers
-import { getUser, getAppointments, getResults, updateUser, register, login } from '../controllers/user.controller';
+import { getUser, getAppointments, getAnalyses, updateUser, register, login } from '../controllers/user.controller';
 
 // routes
 userRouter.get('/', getUser);
 userRouter.get('/appointments', getAppointments);
-userRouter.get('/results', getResults);
+userRouter.get('/analyses', getAnalyses);
 userRouter.put('/', updateUser);
 // For register and login routes (test purposes)
 userRouter.post('/register', register);
