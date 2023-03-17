@@ -1,16 +1,16 @@
 import { dbConnect } from "./db/connection";
 const express = require("express");
 const app = express();
-const appointmentRoutes = require("./routes/appointment");
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+import appointmentRouter from "./routes/appointment";
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use("/appointments", appointmentRoutes);
+app.use("/appointments", appointmentRouter);
 
 const start = async () => {
   try {

@@ -1,11 +1,13 @@
 import { Express, Request, Response, NextFunction } from "express";
 
-export default function validateToken(
+export const validateToken = (
   req: Request,
   res: Response,
   next: NextFunction
-): void {
+) => {
   const { token } = req.params;
   console.log(token);
+  //   req.params.id = findIdFromToken(token);
+  req.body.id = token;
   next();
-}
+};
