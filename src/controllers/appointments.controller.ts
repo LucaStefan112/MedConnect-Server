@@ -6,7 +6,7 @@ import Appointment from "../models/appointment";
 // import Result from "../models/results";
 
 export const getAppointments = async (req: Request, res: Response) => {
-  const { id } = res.locals.user;
+  const { id } = res.locals;
 
   const currentUser = await User.findById(id);
   if (currentUser == null) {
@@ -27,7 +27,7 @@ export const getAppointments = async (req: Request, res: Response) => {
 };
 
 export const postAppointment = async (req: Request, res: Response) => {
-  const { id } = res.locals.user;
+  const { id } = res.locals;
   const { doctor, type, isActive } = req.body;
   const date = new Date(req.body.date);
 
@@ -46,7 +46,7 @@ export const postAppointment = async (req: Request, res: Response) => {
 };
 
 export const getAppointment = async (req: Request, res: Response) => {
-  const { id } = res.locals.user;
+  const { id } = res.locals;
   const { appId } = req.params;
   const currentApp = await Appointment.findById(appId);
   if (currentApp == null) {
@@ -75,7 +75,7 @@ export const getAppointment = async (req: Request, res: Response) => {
 };
 
 export const deActivateAppointment = async (req: Request, res: Response) => {
-  const { id } = res.locals.user;
+  const { id } = res.locals;
   const { appId } = req.params;
   const currentApp = await Appointment.findById(appId);
   if (currentApp == null) {
@@ -106,7 +106,7 @@ export const deActivateAppointment = async (req: Request, res: Response) => {
 };
 
 export const deleteAppointment = async (req: Request, res: Response) => {
-  const { id } = res.locals.user;
+  const { id } = res.locals;
   const { appId } = req.params;
   const currentApp = await Appointment.findById(appId);
   if (currentApp == null) {
