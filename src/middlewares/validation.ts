@@ -8,6 +8,6 @@ export const validateToken = (
   const { token } = req.params;
   console.log(token);
   //   req.params.id = findIdFromToken(token);
-  req.body.id = token;
+  res.locals.user.id = token;
   next();
 };

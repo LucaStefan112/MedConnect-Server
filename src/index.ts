@@ -4,7 +4,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+import { limiter } from "./middlewares/limiter";
 import appointmentRouter from "./routes/appointment";
+
+app.use(limiter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

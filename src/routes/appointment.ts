@@ -21,6 +21,8 @@ appointmentRouter.get("/:token/:appId", getAppointment);
 
 appointmentRouter.delete("/:token/:appId", deleteAppointment);
 
+appointmentRouter.patch("/:token/:appId", deActivateAppointment);
+
 appointmentRouter.put("/:token/:appId", deActivateAppointment);
 
 export default appointmentRouter;

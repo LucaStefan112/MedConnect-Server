@@ -6,7 +6,7 @@ import Appointment from "../models/appointment";
 // import Result from "../models/results";
 
 export const getAppointments = async (req: Request, res: Response) => {
-  const { id } = req.body;
+  const { id } = res.locals.user;
 
   const currentUser = await User.findById(id);
   if (currentUser == null) {
@@ -26,8 +26,8 @@ export const getAppointments = async (req: Request, res: Response) => {
   res.send({ succes: true, message: appointments });
 };
 
-export const postAppointment = async (req, res) => {
-  const { id } = req.body;
+export const postAppointment = async (req: Request, res: Response) => {
+  const { id } = res.locals.user;
   const { doctor, type, isActive } = req.body;
   const date = new Date(req.body.date);
 
@@ -45,8 +45,8 @@ export const postAppointment = async (req, res) => {
   res.send({ succes: true, message: newAppointent });
 };
 
-export const getAppointment = async (req, res) => {
-  const { id } = req.body;
+export const getAppointment = async (req: Request, res: Response) => {
+  const { id } = res.locals.user;
   const { appId } = req.params;
   const currentApp = await Appointment.findById(appId);
   if (currentApp == null) {
@@ -74,8 +74,8 @@ export const getAppointment = async (req, res) => {
   res.send({ succes: true, message: currentApp });
 };
 
-export const deActivateAppointment = async (req, res) => {
-  const { id } = req.body;
+export const deActivateAppointment = async (req: Request, res: Response) => {
+  const { id } = res.locals.user;
   const { appId } = req.params;
   const currentApp = await Appointment.findById(appId);
   if (currentApp == null) {
@@ -105,8 +105,8 @@ export const deActivateAppointment = async (req, res) => {
   res.send({ succes: true, message: "Deactivated appointment" });
 };
 
-export const deleteAppointment = async (req, res) => {
-  const { id } = req.body;
+export const deleteAppointment = async (req: Request, res: Response) => {
+  const { id } = res.locals.user;
   const { appId } = req.params;
   const currentApp = await Appointment.findById(appId);
   if (currentApp == null) {
