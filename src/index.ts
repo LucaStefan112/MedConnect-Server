@@ -3,13 +3,14 @@ import { dbConnect } from "./db/connection";
 const express = require("express");
 const app = express();
 
+// routes
+import userRouter from "./routes/user";
+
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use("/users", userRouter);
 
 const start = async () => {
   try {
