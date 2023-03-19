@@ -4,15 +4,11 @@ import appointmentRouter from "./routes/appointment";
 import { validateToken } from "./middlewares/validation";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+// routes
+import userRouter from "./routes/user";
 
 const express = require("express");
 const app = express();
-
-// routes
-import userRouter from "./routes/user";
-
-// routes
-import userRouter from "./routes/user";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
