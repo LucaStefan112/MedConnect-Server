@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrpyt from "bcryptjs";
 
 import { UserRoles } from "../helper/enums";
 
@@ -9,6 +10,7 @@ export interface IUser {
   role: string;
   dateOfBirth: Date;
   phoneNumber: string;
+  specialization?: string;
 }
 
 export interface IUserModel extends IUser, mongoose.Document {}
@@ -46,6 +48,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+  },
+  specialization: {
+    type: String,
+    required: false,
   },
 });
 
