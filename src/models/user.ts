@@ -13,7 +13,7 @@ export interface IUser {
   specialization?: string;
 }
 
-export interface IUserModel extends IUser, mongoose.Document {}
+export interface IUserModel extends IUser, mongoose.Document { }
 
 const userSchema = new mongoose.Schema({
   fullName: {
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     match: [
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      "Please provide a valid email",
+      'Please provide a valid email',
     ],
   },
   password: {

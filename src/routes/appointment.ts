@@ -5,7 +5,7 @@ import {
   deActivateAppointment,
   getAppointment,
 } from "../controllers/appointments.controller";
-import { validateToken } from "../middlewares/validation";
+//import { validateToken } from "../middlewares/validation";
 
 const express = require("express");
 const appointmentRouter = express.Router();

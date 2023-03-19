@@ -1,23 +1,25 @@
 import { dbConnect } from "./db/connection";
 import { limiter } from "./middlewares/limiter";
 import appointmentRouter from "./routes/appointment";
-import { validateToken } from "./middlewares/validation";
+//import { validateToken } from "./middlewares/validation";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 // routes
 import userRouter from "./routes/user";
+import tokenRouter from "./routes/token";
 
 const express = require("express");
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+//app.use(cookieParser());
 
 app.use(limiter);
 
-app.use(validateToken);
+//app.use(validateToken);
 
+/*
 app.get("/check-auth/:token", (req, res) => {
   const { token } = req.params;
   if (token == null) {
@@ -44,9 +46,11 @@ app.get("/check-auth/:token", (req, res) => {
   res.cookie("token", newToken, { httpOnly: true });
   res.status(200).send({ succes: true, message: currentUser });
 });
+*/
 
 app.use("/appointments", appointmentRouter);
 app.use("/users", userRouter);
+app.use("/check-auth", tokenRouter);
 
 const start = async () => {
   try {

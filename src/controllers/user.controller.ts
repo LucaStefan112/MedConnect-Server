@@ -14,7 +14,7 @@ import { IBasicResponse } from "../helper/response";
 import utils from "../helper/utils";
 
 export const getUser = async (req: Request, res: IBasicResponse) => {
-  const userId = res.locals.user.id;
+  const userId = req.body.user._id;
 
   const user = await User.findOne({ _id: userId });
 
@@ -29,54 +29,43 @@ export const getUser = async (req: Request, res: IBasicResponse) => {
     dateOfBirth: user.dateOfBirth,
     phoneNumber: user.phoneNumber,
     specialization: user.specialization,
-  };
+  }
 
   return res.status(200).send({ success: true, message: "User found", user });
-};
+}
 
 export const getAppointments = async (req: Request, res: IBasicResponse) => {
-  const userId = res.locals.user.id;
+  const userId = req.body.user._id;
   try {
     const user = await User.findOne({ _id: userId });
     if (!user) {
-      return res
-        .status(404)
-        .send({ success: false, message: "User not found" });
+      return res.status(404).send({ success: false, message: "User not found" });
     }
 
-    const appointments =
-      user.role === UserRoles.Patient
-        ? await Appointment.find({ patient: userId })
-        : await Appointment.find({ doctor: userId });
+    const appointments = (user.role === UserRoles.Patient) ?
+      await Appointment.find({ patient: userId })
+      : await Appointment.find({ doctor: userId });
 
-    return res
-      .status(200)
-      .send({ success: true, message: "Appointments found", appointments });
+    return res.status(200).send({ success: true, message: "Appointments found", appointments });
   } catch (error) {
-    return res
-      .status(500)
-      .send({ success: false, message: "Appointments not found", error });
+    return res.status(500).send({ success: false, message: "Appointments not found", error });
   }
-};
+}
 
 export const getAnalyses = async (req: Request, res: IBasicResponse) => {
-  const userId = res.locals.user.id;
+  console.log("userId:", req.body.user._id)
+  const userId = req.body.user._id;
   try {
     const results = await Analysis.find({ person: userId });
-    return res
-      .status(200)
-      .send({ success: true, message: "Results found", results });
+    return res.status(200).send({ success: true, message: "Results found", results });
   } catch (error) {
-    return res
-      .status(500)
-      .send({ success: false, message: "Results not found", error });
+    return res.status(500).send({ success: false, message: "Results not found", error });
   }
-};
+}
 
 export const updateUser = async (req: Request, res: IBasicResponse) => {
-  const userId = res.locals.user.id;
-  const { fullName, email, password, role, dateOfBirth, phoneNumber } =
-    req.body;
+  const userId = req.body.user._id;
+  const { fullName, email, password, role, dateOfBirth, phoneNumber } = req.body;
 
   try {
     const user = await User.findOne({ _id: userId });
@@ -111,12 +100,11 @@ export const updateUser = async (req: Request, res: IBasicResponse) => {
   } catch (error) {
     return res.status(500).send({ error });
   }
-};
+}
 
 // For test purposes
 export const register = async (req: Request, res: IBasicResponse) => {
-  const { fullName, email, password, role, dateOfBirth, phoneNumber } =
-    req.body;
+  const { fullName, email, password, role, dateOfBirth, phoneNumber } = req.body;
   const hashedPassword = utils.hash256(password);
   try {
     const user = await User.create({
@@ -130,25 +118,18 @@ export const register = async (req: Request, res: IBasicResponse) => {
 
     await user.save();
 
-    return res
-      .status(200)
-      .send({ success: true, message: "User created", user });
+    return res.status(200).send({ success: true, message: "User created", user });
   } catch (error) {
-    return res
-      .status(500)
-      .send({ success: false, message: "User not created", error });
+    return res.status(500).send({ success: false, message: "User not created", error });
   }
-};
+}
 
 // For test purposes
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const { JWT_KEY } = process.env;
 
-  const user = await User.findOne({
-    email: email,
-    password: utils.hash256(password),
-  });
+  const user = await User.findOne({ email: email, password: utils.hash256(password) });
 
   if (!user) {
     return res.status(404).send({ success: false, message: "User not found" });
@@ -157,4 +138,4 @@ export const login = async (req: Request, res: Response) => {
   const token = jwt.sign({ user }, JWT_KEY);
 
   res.send({ email: user.email, token: token });
-};
+}
