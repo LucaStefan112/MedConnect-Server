@@ -1,28 +1,25 @@
-const express = require("express");
-const appointmentRouter = express.Router();
-
-import { validateToken } from "../middlewares/validation";
-
 import {
   getAppointments,
-  postAppointment,
+  addAppointment,
   deleteAppointment,
   deActivateAppointment,
   getAppointment,
 } from "../controllers/appointments.controller";
+import { validateToken } from "../middlewares/validation";
 
-appointmentRouter.use("/:token", validateToken);
+const express = require("express");
+const appointmentRouter = express.Router();
 
-appointmentRouter.get("/:token", getAppointments);
+appointmentRouter.get("/", getAppointments);
 
-appointmentRouter.post("/:token", postAppointment);
+appointmentRouter.post("/", addAppointment);
 
-appointmentRouter.get("/:token/:appId", getAppointment);
+appointmentRouter.get("/:appId", getAppointment);
 
-appointmentRouter.delete("/:token/:appId", deleteAppointment);
+appointmentRouter.delete("/:appId", deleteAppointment);
 
-appointmentRouter.patch("/:token/:appId", deActivateAppointment);
+appointmentRouter.patch("/:appId", deActivateAppointment);
 
-appointmentRouter.put("/:token/:appId", deActivateAppointment);
+appointmentRouter.put("/:appId", deActivateAppointment);
 
 export default appointmentRouter;
