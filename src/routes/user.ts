@@ -7,8 +7,6 @@ import { getUser, updateUser, register, login } from '../controllers/user.contro
 // routes
 userRouter.get('/', getUser);
 userRouter.put('/', updateUser);
-
-
 // For register and login routes (test purposes)
 userRouter.post('/register', register);
 userRouter.post('/login', login);
