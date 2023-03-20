@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 
 // models
 import User from "../models/user";
-import Appointment from "../models/appointment";
-import Analysis from "../models/analysis";
 
 // enums
 import { UserRoles, AppointmentTypes } from "../helper/enums";
@@ -14,9 +12,8 @@ import { IBasicResponse } from "../helper/response";
 import utils from "../helper/utils";
 
 export const getUser = async (req: Request, res: IBasicResponse) => {
-  const userId = req.body.user._id;
-
-  const user = await User.findOne({ _id: userId });
+  const { userId } = res.locals;
+  const user = await User.findById(userId);
 
   if (!user) {
     return res.status(404).send({ success: false, message: "User not found" });
@@ -31,44 +28,15 @@ export const getUser = async (req: Request, res: IBasicResponse) => {
     specialization: user.specialization,
   }
 
-  return res.status(200).send({ success: true, message: "User found", user });
-}
-
-export const getAppointments = async (req: Request, res: IBasicResponse) => {
-  const userId = req.body.user._id;
-  try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(404).send({ success: false, message: "User not found" });
-    }
-
-    const appointments = (user.role === UserRoles.Patient) ?
-      await Appointment.find({ patient: userId })
-      : await Appointment.find({ doctor: userId });
-
-    return res.status(200).send({ success: true, message: "Appointments found", appointments });
-  } catch (error) {
-    return res.status(500).send({ success: false, message: "Appointments not found", error });
-  }
-}
-
-export const getAnalyses = async (req: Request, res: IBasicResponse) => {
-  console.log("userId:", req.body.user._id)
-  const userId = req.body.user._id;
-  try {
-    const results = await Analysis.find({ person: userId });
-    return res.status(200).send({ success: true, message: "Results found", results });
-  } catch (error) {
-    return res.status(500).send({ success: false, message: "Results not found", error });
-  }
+  return res.status(200).send({ success: true, message: "User found", data });
 }
 
 export const updateUser = async (req: Request, res: IBasicResponse) => {
-  const userId = req.body.user._id;
   const { fullName, email, password, role, dateOfBirth, phoneNumber } = req.body;
-
   try {
-    const user = await User.findOne({ _id: userId });
+    const { userId } = res.locals;
+    const user = await User.findById(userId);
+
     if (!user) {
       return res.status(404).send({ error: "User not found" });
     }
