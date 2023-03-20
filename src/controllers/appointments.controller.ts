@@ -1,40 +1,26 @@
 import { Request, Response } from "express";
-const express = require("express");
-
 import User from "../models/user";
 import Appointment from "../models/appointment";
-// import Result from "../models/results";
 
 export const getAppointments = async (req: Request, res: Response) => {
-  const { id } = res.locals.user;
+  const { userId } = res.locals;
+  const user = await User.findById(userId);
 
-  const currentUser = await User.findById(id);
-  if (currentUser === null) {
-    res.status(404).send({
-      succes: false,
-      message: "The user was not found",
-    });
-    return;
-  }
+  const appointments = await Appointment.find({ 
+    isActive: true,
+    patient: user,
+  }).populate("doctor");
 
-  const appointments = await Appointment.find({
-    $or: [{ patient: id }, { doctor: id }],
-  });
-
-  console.log(appointments);
-  res.status(200).send({
-    succes: true,
-    message: appointments,
-  });
+  return res.status(200).send({ succes: true, message: 'appointments-found', appointments });
 };
 
 export const addAppointment = async (req: Request, res: Response) => {
   try {
-    const { id } = res.locals.user;
+    const { userId } = res.locals;
     const { doctor, type } = req.body;
     const date = new Date(req.body.date);
 
-    const currentUser = await User.findById(id);
+    const currentUser = await User.findById(userId);
 
     const newAppointent = new Appointment({
       patient: currentUser,
@@ -43,102 +29,48 @@ export const addAppointment = async (req: Request, res: Response) => {
       type,
       isActive: true,
     });
-    newAppointent.save();
-    console.log(newAppointent);
-    res.status(200).send({
-      succes: true,
-      message: newAppointent,
-    });
+
+    await newAppointent.save();
+
+    return res.status(200).send({ succes: true, message: 'appointment-added' });
   } catch (err) {
-    console.log(err);
-    res.status(400).send({
-      succes: false,
-      message: "Failed to add appointment",
-    });
+    return res.status(400).send({ succes: false, message: 'Failed to add appointment' });
   }
 };
 
-export const getAppointment = async (req: Request, res: Response) => {
-  const { id } = res.locals;
-  const { appId } = req.params;
-  const currentApp = await Appointment.findById(appId);
-  if (currentApp == null) {
-    res.status(404).send({
-      succes: false,
-      message: "The given appointment ID was not found",
-    });
-    return;
+export const getAppointment = async (req: Request, res: Response) => {  
+  const { id } = req.params;
+  const appointment = await Appointment.findById(id).populate('doctor').populate('patient');
+
+  if (!appointment) {
+    return res.status(404).send({ succes: false, message: 'Appointment not found' });
   }
 
-  if (currentApp.patient != id && currentApp.doctor != id) {
-    {
-      console.log("Refused the getting of an appointment");
-      console.log("Cause: unauthorized");
-      res.status(401).send({
-        succes: false,
-        message: "Unauthorized",
-      });
-      return;
-    }
-  }
-  res.status(200).send({ succes: true, message: currentApp });
-};
-
-export const deActivateAppointment = async (req: Request, res: Response) => {
-  const { id } = res.locals;
-  const { appId } = req.params;
-  const currentApp = await Appointment.findById(appId);
-  if (currentApp == null) {
-    res.status(404).send({
-      succes: false,
-      message: "The given appointment ID was not found",
-    });
+  if(appointment.patient._id !== res.locals.userId) {
+    return res.status(401).send({ succes: false, message: 'Unauthorized' });
   }
 
-  if (currentApp.patient != id && currentApp.doctor != id) {
-    {
-      console.log("Refused the editing of an appointment");
-      console.log("Cause: unauthorized");
-      res.status(401).send({
-        succes: false,
-        message:
-          "Refused the editing of an appointment\n" + "Cause: unauthorized",
-      });
-      return;
-    }
-  }
-  currentApp.isActive = false;
-  await currentApp.save();
-  res.status(200).send({
-    succes: true,
-    message: "Deactivated appointment",
-  });
+  return res.status(200).send({ succes: true, message: 'appointment-found', appointment });
 };
 
 export const deleteAppointment = async (req: Request, res: Response) => {
-  const { id } = res.locals;
-  const { appId } = req.params;
-  const currentApp = await Appointment.findById(appId);
-  if (currentApp == null) {
-    res.status(404).send({
-      succes: false,
-      message: "The given appointment ID was not found",
-    });
-    return;
+  const { id } = req.params;
+  const { userId } = res.locals;
+  const appointment = await Appointment.find({ isActive: true }).findById(id).populate("patient");
+
+  if (!appointment) {
+    return res.status(404).send({ succes: false, message: "Appointment not found" });
   }
 
-  if (currentApp.patient != id && currentApp.doctor != id) {
-    {
-      console.log("Refused the deletion of an appointment");
-      console.log("Cause: unauthorized");
-      res.status(401).send({
-        succes: false,
-        message:
-          "Refused the deletion of an appointment\n" + "Cause: unauthorized",
-      });
-      return;
-    }
+  if (appointment.patient._id !== userId) {
+    return res.status(401).send({ succes: false, message: "Unauthorized" });
   }
-  Appointment.findByIdAndRemove(appId);
-  res.status(200).send({ succes: true, message: "Deleted appointment" });
+
+  try{
+    await Appointment.deleteOne({ _id: id });
+  } catch (err) {
+    return res.status(400).send({ succes: false, message: "Failed to delete appointment" });
+  }
+
+  return res.status(200).send({ succes: true, message: "Deleted appointment" });
 };

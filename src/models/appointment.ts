@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 import { AppointmentTypes } from "../helper/enums";
+import { IUser, IUserModel } from "./user";
 
 export interface IAppointment {
-  patient: string;
+  patient: IUserModel;
   doctor: string;
   date: Date;
   type: string;

@@ -1,34 +1,26 @@
-import { Express, Request, Response, NextFunction } from "express";
-const dotenv = require("dotenv");
-const jwt = require("jsonwebtoken");
-const { ACCESS_TOKEN_SECRET } = dotenv.config().parsed;
+import { Request, Response, NextFunction } from "express";
+import User from "../models/user";
+import jwt from "jsonwebtoken";
 
-export const validateToken = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  // this middleware will be called for every request but the check-auth one
-  // so when it will that path it will skip
-  if (req.path.split("/")[1] === "check-auth") {
-    next();
-    return;
-  }
-
+export const validateToken = (req: Request, res: Response, next: NextFunction) => {
   const { token } = req.cookies;
+  
   try {
-    const user = jwt.verify(token, ACCESS_TOKEN_SECRET);
-    res.locals.user = user;
+    res.locals.userId = jwt.verify(token, process.env.JWT_KEY);
+    const user = User.findById(res.locals.userId);
+
+    if(!user) {
+      return res.clearCookie("token").status(401).send({
+        success: false,
+        message: "Unauthorised: User not found",
+      });
+    }
+
     next();
-    // console.log(token);
   } catch (err) {
-    console.log(err);
-    console.log(token);
-    res.clearCookie("token");
-    res.status(401).send({
+    return res.clearCookie("token").status(401).send({
       success: false,
-      message:
-        "Unauthorised: Cookie not found, please send a GET request to /check-auth/:token",
+      message: "Unauthorised: Token not found",
     });
   }
 };
