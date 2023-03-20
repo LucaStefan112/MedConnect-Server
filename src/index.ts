@@ -5,6 +5,7 @@ import { validateToken } from "./middlewares/validation";
 // routes
 import appointmentRouter from "./routes/appointment";
 import userRouter from "./routes/user";
+import analysisRouter from "./routes/analysis";
 import { checkAuth } from "./controllers/check-auth.controller";
 
 const express = require("express");
@@ -21,6 +22,7 @@ app.use(validateToken);
 
 app.use("/appointments", appointmentRouter);
 app.use("/users", userRouter);
+app.use("/analyses", analysisRouter);
 
 const start = async () => {
   try {

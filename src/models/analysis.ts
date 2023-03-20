@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import { IUser, IUserModel } from "./user";
 export interface IAnalysis {
     name: string;
     result: number;
     unit: string;
-    person: string;
+    person: IUserModel;
 }
 
 export interface IPerson extends IAnalysis, mongoose.Document { }
@@ -22,7 +23,7 @@ const analysisSchema = new mongoose.Schema({
         required: true,
     },
     person: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "User",
     }
