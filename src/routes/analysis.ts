@@ -4,9 +4,12 @@ import {
     getAnalysis,
 } from "../controllers/analysis.controller";
 
+// middlewares
+import { validateToken } from "../middlewares/validation";
+
 const analysisRouter = express.Router();
 
-analysisRouter.get("/", getAnalyses);
-analysisRouter.get("/:id", getAnalysis);
+analysisRouter.get("/", validateToken, getAnalyses);
+analysisRouter.get("/:id", validateToken, getAnalysis);
 
 export default analysisRouter;

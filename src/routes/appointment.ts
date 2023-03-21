@@ -6,11 +6,14 @@ import {
   getAppointment,
 } from "../controllers/appointments.controller";
 
+// middlewares
+import { validateToken } from "../middlewares/validation";
+
 const appointmentRouter = express.Router();
 
-appointmentRouter.get("/", getAppointments);
-appointmentRouter.post("/", addAppointment);
-appointmentRouter.get("/:id", getAppointment);
-appointmentRouter.delete("/:id", deleteAppointment);
+appointmentRouter.get("/", validateToken, getAppointments);
+appointmentRouter.post("/", validateToken, addAppointment);
+appointmentRouter.get("/:id", validateToken, getAppointment);
+appointmentRouter.delete("/:id", validateToken, deleteAppointment);
 
 export default appointmentRouter;

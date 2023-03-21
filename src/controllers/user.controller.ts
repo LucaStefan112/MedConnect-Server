@@ -38,7 +38,7 @@ export const updateUser = async (req: Request, res: IBasicResponse) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).send({ error: "User not found" });
+      return res.status(404).send({ success: false, error: "User not found" });
     }
 
     await user!.updateOne({

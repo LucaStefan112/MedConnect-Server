@@ -1,7 +1,7 @@
 import { dbConnect } from "./db/connection";
 import { limiter } from "./middlewares/limiter";
 import cookieParser from "cookie-parser";
-import { validateToken } from "./middlewares/validation";
+
 // routes
 import appointmentRouter from "./routes/appointment";
 import userRouter from "./routes/user";
@@ -16,9 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(limiter);
 
-app.get('/check-auth', checkAuth);
-
-app.use(validateToken);
+app.get('/check-auth/:token', checkAuth);
 
 app.use("/appointments", appointmentRouter);
 app.use("/users", userRouter);

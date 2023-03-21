@@ -7,7 +7,7 @@ export interface IAnalysis {
     person: IUserModel;
 }
 
-export interface IPerson extends IAnalysis, mongoose.Document { }
+export interface IAnalysisModel extends IAnalysis, mongoose.Document { }
 
 const analysisSchema = new mongoose.Schema({
     name: {
@@ -18,8 +18,8 @@ const analysisSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    unit: {
-        type: String,
+    date: {
+        type: Date,
         required: true,
     },
     person: {
@@ -29,4 +29,4 @@ const analysisSchema = new mongoose.Schema({
     }
 })
 
-export default mongoose.model<IPerson>("Analysis", analysisSchema);
+export default mongoose.model<IAnalysis>("Analysis", analysisSchema);
