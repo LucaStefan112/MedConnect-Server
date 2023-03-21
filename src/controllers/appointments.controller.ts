@@ -3,10 +3,10 @@ import User from "../models/user";
 import Appointment from "../models/appointment";
 
 export const getAppointments = async (req: Request, res: Response) => {
-  const { userId } = res.locals;
+  const userId = res.locals.user._id;
   const user = await User.findById(userId);
 
-  const appointments = await Appointment.find({ 
+  const appointments = await Appointment.find({
     isActive: true,
     patient: user,
   }).populate("doctor");
@@ -16,7 +16,7 @@ export const getAppointments = async (req: Request, res: Response) => {
 
 export const addAppointment = async (req: Request, res: Response) => {
   try {
-    const { userId } = res.locals;
+    const userId = res.locals.user._id;
     const { doctor, type } = req.body;
     const date = new Date(req.body.date);
 
@@ -38,15 +38,16 @@ export const addAppointment = async (req: Request, res: Response) => {
   }
 };
 
-export const getAppointment = async (req: Request, res: Response) => {  
+export const getAppointment = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const userId = res.locals.user._id;
   const appointment = await Appointment.findById(id).populate('doctor').populate('patient');
 
   if (!appointment) {
     return res.status(404).send({ succes: false, message: 'Appointment not found' });
   }
 
-  if(appointment.patient._id !== res.locals.userId) {
+  if (appointment.patient._id !== userId) {
     return res.status(401).send({ succes: false, message: 'Unauthorized' });
   }
 
@@ -55,7 +56,7 @@ export const getAppointment = async (req: Request, res: Response) => {
 
 export const deleteAppointment = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { userId } = res.locals;
+  const userId = res.locals.user._id;
   const appointment = await Appointment.find({ isActive: true }).findById(id).populate("patient");
 
   if (!appointment) {
@@ -66,7 +67,7 @@ export const deleteAppointment = async (req: Request, res: Response) => {
     return res.status(401).send({ succes: false, message: "Unauthorized" });
   }
 
-  try{
+  try {
     await Appointment.deleteOne({ _id: id });
   } catch (err) {
     return res.status(400).send({ succes: false, message: "Failed to delete appointment" });

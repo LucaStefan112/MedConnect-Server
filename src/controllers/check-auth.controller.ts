@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import { verify, decode, JsonWebTokenError, sign, JwtPayload } from 'jsonwebtoken';
 
 export const checkAuth = async (req: Request, res: Response) => {
   const { token } = req.params;
@@ -8,20 +8,21 @@ export const checkAuth = async (req: Request, res: Response) => {
     return res.status(401).send({ succes: false, message: 'Unauthorized: Token not found' });
   }
 
-  let currentUser: string | jwt.JwtPayload;
+  let currentUser: string | JwtPayload;
 
-  jwt.verify(token, process.env.JWT_KEY, (err, tokenUser) => {
+  verify(token, process.env.JWT_KEY, (err, tokenUser) => {
     if (err) {
       return res.status(401).send({ succes: false, message: 'Unauthorized: Bad token' });
     }
     currentUser = tokenUser;
   });
 
-  const newToken = jwt.sign(currentUser, process.env.JWT_KEY,
-    {
-      expiresIn: process.env.TOKEN_EXPIRATION
-    }
-  );
+  const newToken = sign(currentUser, process.env.JWT_KEY, { expiresIn: '1h' });
 
-  return res.cookie("token", newToken, { httpOnly: true }).status(200).send({ succes: true, message: 'Access granted' });
+  return res.cookie("token", newToken,
+    {
+      httpOnly: true,
+      maxAge: 1 * 60 * 60 * 1000 // 1 hour
+    })
+    .status(200).send({ success: true, message: 'Access granted' });
 };

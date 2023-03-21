@@ -3,7 +3,7 @@ import { IUser, IUserModel } from "./user";
 export interface IAnalysis {
     name: string;
     result: number;
-    unit: string;
+    date: Date;
     person: IUserModel;
 }
 

@@ -12,7 +12,8 @@ import { IBasicResponse } from "../helper/response";
 import utils from "../helper/utils";
 
 export const getUser = async (req: Request, res: IBasicResponse) => {
-  const { userId } = res.locals;
+  const userId = res.locals.user._id;
+  console.log("res.locals:", res.locals);
   const user = await User.findById(userId);
 
   if (!user) {
@@ -34,7 +35,7 @@ export const getUser = async (req: Request, res: IBasicResponse) => {
 export const updateUser = async (req: Request, res: IBasicResponse) => {
   const { fullName, email, password, role, dateOfBirth, phoneNumber } = req.body;
   try {
-    const { userId } = res.locals;
+    const userId = res.locals.user._id;
     const user = await User.findById(userId);
 
     if (!user) {
