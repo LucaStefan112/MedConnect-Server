@@ -40,12 +40,13 @@ export const getAnalysis = async (req: Request, res: Response) => {
     }
 
     const analysis = await Analysis.findById(id).populate('person');
+    console.log(analysis);
 
     if (!analysis) {
         return res.status(404).send({ success: false, message: 'Analysis not found' });
     }
 
-    if (analysis.person._id !== res.locals.user._id) {
+    if (analysis.person._id.valueOf() !== res.locals.user._id) {
         return res.status(401).send({ success: false, message: 'Unauthorized' });
     }
 
