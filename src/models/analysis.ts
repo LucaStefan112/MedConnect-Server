@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
+import { IUser, IUserModel } from "./user";
 export interface IAnalysis {
     name: string;
     result: number;
-    unit: string;
-    person: string;
+    date: Date;
+    person: IUserModel;
 }
 
-export interface IPerson extends IAnalysis, mongoose.Document { }
+export interface IAnalysisModel extends IAnalysis, mongoose.Document { }
 
 const analysisSchema = new mongoose.Schema({
     name: {
@@ -17,15 +18,15 @@ const analysisSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    unit: {
-        type: String,
+    date: {
+        type: Date,
         required: true,
     },
     person: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "User",
     }
 })
 
-export default mongoose.model<IPerson>("Analysis", analysisSchema);
+export default mongoose.model<IAnalysis>("Analysis", analysisSchema);

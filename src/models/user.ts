@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrpyt from "bcryptjs";
 
 import { UserRoles } from "../helper/enums";
 
