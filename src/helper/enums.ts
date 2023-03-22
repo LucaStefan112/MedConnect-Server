@@ -4,8 +4,9 @@ export const AppointmentTypes = {
 };
 
 export const UserRoles = {
+    Person: "person",
     Patient: "patient",
     Doctor: "doctor",
     Nurse: "nurse",
-    Admin: "admin",
+    Admin: "admin"
 };

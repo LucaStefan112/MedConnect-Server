@@ -1,29 +1,43 @@
 import { Request, Response } from "express";
 import User from "../models/user";
 import Appointment from "../models/appointment";
+import { UserRoles } from "../helper/enums";
 
 export const getAppointments = async (req: Request, res: Response) => {
-  const userId = res.locals.user._id;
+  const { userId } = res.locals;
+
   const user = await User.findById(userId);
 
+  if (!user) {
+    return res.status(404).send({ succes: false, message: 'User not found' });
+  }
+  
   const appointments = await Appointment.find({
     isActive: true,
     patient: user,
-  }).populate("doctor");
+  });
 
   return res.status(200).send({ succes: true, message: 'appointments-found', appointments });
 };
 
 export const addAppointment = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
+  const user = await User.findById(userId);
+
+  if (!user) {
+    return res.status(404).send({ succes: false, message: 'User not found' });
+  }
+
+  const { doctor, type } = req.body;
+  const date = new Date(req.body.date);
+
+  if(!doctor || !date || !type) {
+    return res.status(400).send({ succes: false, message: 'Bad request' });
+  }
+
   try {
-    const userId = res.locals.user._id;
-    const { doctor, type } = req.body;
-    const date = new Date(req.body.date);
-
-    const currentUser = await User.findById(userId);
-
     const newAppointent = new Appointment({
-      patient: currentUser,
+      patient: user,
       doctor,
       date,
       type,
@@ -39,15 +53,20 @@ export const addAppointment = async (req: Request, res: Response) => {
 };
 
 export const getAppointment = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
   const { id } = req.params;
-  const userId = res.locals.user._id;
-  const appointment = await Appointment.findById(id).populate('doctor').populate('patient');
+
+  if(!id) {
+    return res.status(400).send({ succes: false, message: 'Bad request' });
+  }
+
+  const appointment = await Appointment.findById(id).populate(UserRoles.Doctor);
 
   if (!appointment) {
     return res.status(404).send({ succes: false, message: 'Appointment not found' });
   }
 
-  if (appointment.patient._id !== userId) {
+  if (appointment.patient._id.valueOf() !== userId) {
     return res.status(401).send({ succes: false, message: 'Unauthorized' });
   }
 
@@ -55,15 +74,20 @@ export const getAppointment = async (req: Request, res: Response) => {
 };
 
 export const deleteAppointment = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
   const { id } = req.params;
-  const userId = res.locals.user._id;
-  const appointment = await Appointment.find({ isActive: true }).findById(id).populate("patient");
+
+  if(!id) {
+    return res.status(400).send({ succes: false, message: 'Bad request' });
+  }
+
+  const appointment = await Appointment.findById(id).populate(UserRoles.Patient);
 
   if (!appointment) {
     return res.status(404).send({ succes: false, message: "Appointment not found" });
   }
 
-  if (appointment.patient._id !== userId) {
+  if (appointment.patient._id.valueOf() !== userId) {
     return res.status(401).send({ succes: false, message: "Unauthorized" });
   }
 
