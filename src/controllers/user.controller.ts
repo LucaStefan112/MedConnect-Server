@@ -108,7 +108,7 @@ export const login = async (req: Request, res: Response) => {
     return res.status(404).send({ success: false, message: "User not found" });
   }
 
-  const token = jwt.sign({ user }, JWT_KEY);
+  const token = jwt.sign({ id: user._id }, JWT_KEY);
 
   res.send({ email: user.email, token: token });
 }
