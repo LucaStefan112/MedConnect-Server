@@ -9,7 +9,7 @@ export const validateToken = (req: Request, res: Response, next: NextFunction) =
   if (!token) {
     return res.status(401).send({ succes: false, message: 'Unauthorized: Token not found' });
   }
-  
+
   try {
     let decodedToken: ITokenUser;
 
@@ -25,6 +25,7 @@ export const validateToken = (req: Request, res: Response, next: NextFunction) =
     }
 
     res.locals.userId = decodedToken.id;
+    console.log("Token validated");
     next();
   } catch (err) {
     return res.clearCookie("token").status(401).send({ success: false, message: "Unauthorised: Token not found" });

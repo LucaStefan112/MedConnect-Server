@@ -5,7 +5,7 @@ import {
 } from "../controllers/analysis.controller";
 
 // middlewares
-import { validateToken } from "../middlewares/validation";
+import { validateToken } from "../middlewares/tokenValidation";
 
 const analysisRouter = express.Router();
 

@@ -5,11 +5,16 @@ const userRouter = Router();
 import { getUser, updateUser, register, login } from '../controllers/user.controller';
 
 // middlewares
-import { validateToken } from '../middlewares/validation';
+import { validateToken } from '../middlewares/tokenValidation';
+import { validateBody } from "../middlewares/bodyValidation";
+
+// validation
+import { userSchema } from '../validations/user.validation';
 
 // routes
 userRouter.get('/', validateToken, getUser);
-userRouter.put('/', validateToken, updateUser);
+userRouter.put('/', validateBody(userSchema), validateToken, updateUser);
+
 // For register and login routes (test purposes)
 userRouter.post('/register', register);
 userRouter.post('/login', login);
