@@ -7,12 +7,17 @@ import {
 } from "../controllers/appointments.controller";
 
 // middlewares
-import { validateToken } from "../middlewares/validation";
+import { validateToken } from "../middlewares/tokenValidation";
+import { validateBody } from "../middlewares/bodyValidation";
+
+// validation
+import { appointmentSchema } from "../validations/appointment.validation";
+
 
 const appointmentRouter = express.Router();
 
 appointmentRouter.get("/", validateToken, getAppointments);
-appointmentRouter.post("/", validateToken, addAppointment);
+appointmentRouter.post("/", validateBody(appointmentSchema), validateToken, addAppointment);
 appointmentRouter.get("/:id", validateToken, getAppointment);
 appointmentRouter.delete("/:id", validateToken, deleteAppointment);
 

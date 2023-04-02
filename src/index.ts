@@ -8,7 +8,7 @@ import userRouter from "./routes/user";
 import analysisRouter from "./routes/analysis";
 import { checkAuth } from "./controllers/check-auth.controller";
 
-const express = require("express");
+import express from "express";
 const app = express();
 
 app.use(express.json());
