@@ -1,38 +1,51 @@
 import { Request, Response } from "express";
-import { verify, decode, JsonWebTokenError, sign, JwtPayload } from 'jsonwebtoken';
+import {
+  verify,
+  decode,
+  JsonWebTokenError,
+  sign,
+  JwtPayload,
+} from "jsonwebtoken";
 
 export interface ITokenUser {
-  id: string,
-  iat?: number,
-  exp?: number
+  id: string;
+  iat?: number;
+  exp?: number;
 }
 
 export const checkAuth = async (req: Request, res: Response) => {
+  console.log("AM AJUNS AICI");
   const { token } = req.params;
+  // res.send({ amAjuns: "aici" });
+  // return;
 
   if (!token) {
-    return res.status(401).send({ success: false, message: 'Unauthorized: Token not found' });
+    return res
+      .status(401)
+      .send({ success: false, message: "Unauthorized: Token not found" });
   }
 
   let currentUser: ITokenUser;
 
   verify(token, process.env.JWT_KEY, (err, tokenUser: ITokenUser) => {
     if (err) {
-      return res.status(401).send({ success: false, message: 'Unauthorized: Bad token' });
+      return res
+        .status(401)
+        .send({ success: false, message: "Unauthorized: Bad token" });
     }
     currentUser = { id: tokenUser.id };
   });
 
-  const newToken = sign(currentUser, process.env.JWT_KEY, { expiresIn: '1h' });
+  const newToken = sign(currentUser, process.env.JWT_KEY, { expiresIn: "1h" });
 
   if (req.cookies.token) {
-    return res.send({ success: false, message: 'Already has cookie' });
+    return res.send({ success: false, message: "Already has cookie" });
   }
 
   res.cookie("token", newToken, {
     httpOnly: true,
-    maxAge: 1 * 60 * 60 * 1000 // 1 hour
+    maxAge: 1 * 60 * 60 * 1000, // 1 hour
   });
 
-  return res.status(200).send({ success: true, message: 'Access granted' });
+  return res.status(200).send({ success: true, message: "Access granted" });
 };
