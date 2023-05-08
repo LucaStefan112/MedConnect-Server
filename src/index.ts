@@ -7,10 +7,12 @@ import appointmentRouter from "./routes/appointment";
 import userRouter from "./routes/user";
 import analysisRouter from "./routes/analysis";
 import { checkAuth } from "./controllers/check-auth.controller";
+import corsMiddleware from "./middlewares/cors";
 
 import express from "express";
 const app = express();
 
+app.use(corsMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
