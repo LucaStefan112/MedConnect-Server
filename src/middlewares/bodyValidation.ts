@@ -9,6 +9,7 @@ export const validateBody = (schema: z.ZodType<any, any>) => {
             next();
         }
         catch (err) {
+            console.log("Body validation failed")
             return res.status(400).send({ success: false, message: err.errors });
         }
     };
