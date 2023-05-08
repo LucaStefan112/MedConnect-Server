@@ -17,7 +17,7 @@ import { appointmentSchema } from "../validations/appointment.validation";
 const appointmentRouter = express.Router();
 
 appointmentRouter.get("/", validateToken, getAppointments);
-appointmentRouter.post("/", validateBody(appointmentSchema), validateToken, addAppointment);
+appointmentRouter.post("/", validateToken, addAppointment);
 appointmentRouter.get("/:id", validateToken, getAppointment);
 appointmentRouter.delete("/:id", validateToken, deleteAppointment);
 

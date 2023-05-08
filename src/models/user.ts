@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  specialization: {
+  specialisation: {
     type: String,
     required: false,
   },
