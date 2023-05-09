@@ -13,16 +13,16 @@ export default async function settingCalendar(idDoc, dateStart: Date, dateFinish
                 doctor,
                 dates
             });
-           // await calendar.save();
+            await calendar.save();
             console.log("The instance is created");
         }
         else {
-            //
             const dates = await parserDate(dateStart, dateFinish);
-            /*for (var i; i < dates.length; i++) {
+            var i;
+            for (i=0; i < dates.length; i++) {
                 checker.dates.push(dates[i]);
             }
-            await calendar.findByIdAndUpdate(checker.id, { dates: checker.dates });*/
+            await calendar.findByIdAndUpdate(checker.id, { dates: checker.dates });
             console.log("The instance was updated");
         }
     }
@@ -47,7 +47,7 @@ async function parserDate(dateStart: Date, dateFinish: Date) {
             hourStart++;
         }
     }
-    console.log(finalDates);
+    //console.log(finalDates);
     return finalDates;
 }
 
