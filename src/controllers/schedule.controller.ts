@@ -4,10 +4,11 @@ import { Request, Response } from "express";
 import Schedule from "../models/schedule";
 
 export const register = async (req: Request, res: Response) => {
-    const {doctor,dates} = req.body;
+    const {doctor,dates,patients} = req.body;
     const sched= new Schedule({
         doctor,
-        dates
+        dates,
+        patients
     });
     await sched.save();
     console.log(sched);

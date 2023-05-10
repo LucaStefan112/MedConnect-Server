@@ -14,7 +14,7 @@ export async function doctorChecker(idPerson) { //checking if the user is a doct
 
 //----------------------------------------------------
 
-export default async function settingSchedule(idDoc, date: Date) { //should be called when the appointment function is used -> inside of it
+export default async function settingSchedule(idDoc, date: Date, patient) { //should be called when the appointment function is used -> inside of it
     const doc = await doctorChecker(idDoc);
     if (doc == true) {
         const checker = await schedule.findOne({ doctor: idDoc });
@@ -31,7 +31,8 @@ export default async function settingSchedule(idDoc, date: Date) { //should be c
         else {
             //
             checker.dates.push(date);
-            await schedule.findByIdAndUpdate(checker.id, { dates: checker.dates });
+            checker.patients.push(patient);
+            await schedule.findByIdAndUpdate(checker.id, { dates: checker.dates , patients:checker.patients});
             console.log("The instance was updated");
         }
     }
@@ -97,7 +98,8 @@ export async function gettingSchedule(idDoc) { //full schedule of a doctor
                 var i;
                 for (i = 0; i < time.dates.length; i++) {
                     returnArray[counter] = time.dates[i];
-                    counter++;
+                    returnArray[counter+1] = time.patients[i];
+                    counter=counter+2;
                 }
             }
             console.log("There are appointments")
