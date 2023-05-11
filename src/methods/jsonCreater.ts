@@ -1,3 +1,4 @@
+import user from "../models/user";
 import { gettingCalendar } from "./setCalendar";
 import { doctorChecker, gettingSchedule } from "./setSchedule";
 
@@ -10,9 +11,10 @@ export default async function jsonHelper(idDoc) {
         const scheduleResult = await gettingSchedule(idDoc);
         let schedules = [];
         for (var i = 0; i < scheduleResult.length; i = i + 2) {
+            const patient = await user.findById(scheduleResult[i+1]);
             let scheduleInstance = {
                 "date": scheduleResult[i],
-                "patient": scheduleResult[i + 1]
+                "patient": patient
             };
             schedules.push(scheduleInstance);
         }

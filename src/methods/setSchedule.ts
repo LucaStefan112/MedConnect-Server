@@ -21,9 +21,11 @@ export default async function settingSchedule(idDoc, date: Date, patient) { //sh
         if (checker == null) {
             const doctor = idDoc;
             const dates = date;
+            const patients = patient;
             const schedule = new Schedule({
                 doctor,
-                dates
+                dates,
+                patients
             });
             await schedule.save();
             console.log("The instance is created");
