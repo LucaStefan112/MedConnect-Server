@@ -11,7 +11,7 @@ export default async function jsonHelper(idDoc) {
         const scheduleResult = await gettingSchedule(idDoc);
         let schedules = [];
         for (var i = 0; i < scheduleResult.length; i = i + 2) {
-            const patient = await user.findById(scheduleResult[i+1]);
+            const patient = await user.findById(scheduleResult[i + 1]);
             let scheduleInstance = {
                 "date": scheduleResult[i],
                 "patient": patient
@@ -44,7 +44,7 @@ export default async function jsonHelper(idDoc) {
         //console.log(finalResult);
 
         //converting to JSON
-        const jsonData = JSON.stringify(finalResult,null,2);
+        const jsonData = JSON.stringify(finalResult, null, 2);
 
         //writing the data
         fs.writeFile("data.json", jsonData, (error) => {
