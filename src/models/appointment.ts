@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 import { AppointmentTypes } from "../helper/enums";
 import { IUser, IUserModel } from "./user";
+import { ISpecialisation } from "./specialisation";
 
 export interface IAppointment {
   patient: IUserModel;
@@ -10,6 +11,7 @@ export interface IAppointment {
   type: string;
   meetingLink: string;
   isActive: boolean;
+  specialization: ISpecialisation;
 }
 
 export interface IAppointmentModel extends IAppointment, mongoose.Document {}
@@ -43,6 +45,11 @@ const appointmentSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default: true,
+  },
+  specialisation: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Specialisation",
+    required: true,
   },
 });
 

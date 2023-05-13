@@ -12,10 +12,8 @@ export const getAppointments = async (req: Request, res: Response) => {
     return res.status(404).send({ success: false, message: 'User not found' });
   }
 
-  const appointments = await Appointment.find({
-    isActive: true,
-    patient: user,
-  });
+  // get all appointments for patient with the doctor and specialisation populated
+  const appointments = await Appointment.find({ patient: user }).populate(UserRoles.Doctor).populate('specialisation');
 
   return res.status(200).send({ success: true, message: 'appointments-found', appointments });
 };
@@ -28,11 +26,11 @@ export const addAppointment = async (req: Request, res: Response) => {
     return res.status(404).send({ success: false, message: 'User not found' });
   }
 
-  const { doctor, type } = req.body;
-  const date = new Date(req.body.date);
-
-  if (!doctor || !date || !type) {
-    return res.status(400).send({ success: false, message: 'Bad request' });
+  const { doctor, specialisation } = req.body;
+  const date = new Date(Date.parse(req.body.date));
+  
+  if (!doctor || !date || !specialisation) {
+    return res.status(400).send({ success: false, message: 'No doctor or date' });
   }
 
   try {
@@ -40,7 +38,7 @@ export const addAppointment = async (req: Request, res: Response) => {
       patient: user,
       doctor,
       date,
-      type,
+      specialisation,
       isActive: true,
     });
 

@@ -8,11 +8,6 @@ import {
 
 // middlewares
 import { validateToken } from "../middlewares/tokenValidation";
-import { validateBody } from "../middlewares/bodyValidation";
-
-// validation
-import { appointmentSchema } from "../validations/appointment.validation";
-
 
 const appointmentRouter = express.Router();
 

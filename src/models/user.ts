@@ -1,27 +1,44 @@
 import mongoose from "mongoose";
 
 import { UserRoles } from "../helper/enums";
+import { ISpecialisation } from "./specialisation";
 
 export interface IUser {
-  fullName: string;
+  firstName: string;
+  lastName: string;
+  cnp: string;
   email: string;
   password: string;
   role: string;
   dateOfBirth: Date;
+  sex: string;
+  citizenship: string;
+  country: string;
+  county: string;
+  city: string;
+  completeAddress: string;  
   phoneNumber: string;
-  specialization?: string;
+  specialization?: ISpecialisation;
 }
 
 export interface IUserModel extends IUser, mongoose.Document { }
 
 const userSchema = new mongoose.Schema({
-  fullName: {
+  firstName: {
     type: String,
-    required: true,
+    required: false,
+  },
+  lastName: {
+    type: String,
+    required: false,
+  },
+  cnp: {
+    type: String,
+    required: false,
   },
   email: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
     match: [
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -30,11 +47,11 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: false,
   },
   role: {
     type: String,
-    required: true,
+    required: false,
     enum: UserRoles,
     default: "patient",
   },
@@ -45,13 +62,38 @@ const userSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
   },
   specialisation: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Specialisation",
+    required: false,
+  },
+  sex: {
     type: String,
     required: false,
   },
+  citizenship: {
+    type: String,
+    required: false,
+  },
+  country: {
+    type: String,
+    required: false,
+  },
+  county: {
+    type: String,
+    required: false,
+  },
+  city: {
+    type: String,
+    required: false,
+  },
+  completeAddress: {
+    type: String,
+    required: false,
+  }
 });
 
 export default mongoose.model<IUserModel>("User", userSchema);
