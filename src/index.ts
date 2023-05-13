@@ -11,7 +11,7 @@ import { checkAuth } from "./controllers/check-auth.controller";
 
 import express from "express";
 import settingSchedule, { gettingSchedule } from "./methods/setSchedule";
-import jsonHelper, { busyDays, freeDays, jsonOpener } from "./methods/jsonCreater";
+import jsonHelper, { busyDays, freeDays, jsonOpener } from "./methods/jsonCreator";
 const app = express();
 
 app.use(express.json());
