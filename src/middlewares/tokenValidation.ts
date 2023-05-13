@@ -1,12 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import User from "../models/user";
-import { verify, decode, JsonWebTokenError, sign, JwtPayload } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
 import { ITokenUser } from "../controllers/check-auth.controller";
 
 export const validateToken = (req: Request, res: Response, next: NextFunction) => {
   const { token } = req.cookies;
-
-  console.log(req.cookies)
 
   if (!token) {
     return res.status(401).send({ succes: false, message: 'Unauthorized: Token not found' });
@@ -27,7 +24,6 @@ export const validateToken = (req: Request, res: Response, next: NextFunction) =
     }
 
     res.locals.userId = decodedToken.id;
-    console.log("Token validated");
     next();
   } catch (err) {
     return res.clearCookie("token").status(401).send({ success: false, message: "Unauthorised: Token not found" });

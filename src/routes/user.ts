@@ -15,6 +15,7 @@ import { userSchema } from '../validations/user.validation';
 userRouter.get('/', validateToken, getUser);
 userRouter.put('/', validateBody(userSchema), validateToken, updateUser);
 
+
 // For register and login routes (test purposes)
 userRouter.post('/register', register);
 userRouter.post('/login', login);

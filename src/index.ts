@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(limiter);
 
-app.get('/check-auth/:token', checkAuth);
+app.get('/check-auth/', checkAuth);
 
 app.use("/appointments", appointmentRouter);
 app.use("/users", userRouter);
@@ -35,11 +35,17 @@ app.get('/specialisations', async (req, res) => {
   return res.end();
 });
 
+app.get('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.status(200).send({ success: true, message: 'Logged out' });
+  return res.end();
+});
+
 const start = async () => {
   try {
     await dbConnect();
     app.listen(process.env.PORT, () => {
-      console.log(`Example app listening on port ${process.env.PORT}!`);
+      console.log(`App listening on port ${process.env.PORT}!`);
     });
   } catch (err) {
     throw err;

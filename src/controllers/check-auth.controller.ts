@@ -8,31 +8,24 @@ export interface ITokenUser {
 }
 
 export const checkAuth = async (req: Request, res: Response) => {
-  const { token } = req.params;
+  // get token from cookies
+  const token = req.cookies.token;
 
-  if (!token) {
-    return res.status(401).send({ success: false, message: 'Unauthorized: Token not found' });
-  }
-
-  let currentUser: ITokenUser;
-
-  verify(token, process.env.JWT_KEY, (err, tokenUser: ITokenUser) => {
-    if (err) {
-      return res.status(401).send({ success: false, message: 'Unauthorized: Bad token' });
+  try{
+    if (!token) {
+      return res.status(401).send({ success: false, message: 'Unauthorized: Token not found' });
     }
-    currentUser = { id: tokenUser.id };
-  });
-
-  const newToken = sign(currentUser, process.env.JWT_KEY, { expiresIn: '1h' });
-
-  if (req.cookies.token) {
-    return res.send({ success: false, message: 'Already has cookie' });
-  }
-
-  res.cookie("token", newToken, {
-    httpOnly: true,
-    maxAge: 1 * 60 * 60 * 1000 // 1 hour
-  });
-
-  return res.status(200).send({ success: true, message: 'Access granted' });
+  
+    let currentUser: ITokenUser;
+  
+    verify(token, process.env.JWT_KEY, (err, tokenUser: ITokenUser) => {
+      if (err) {
+        return res.status(401).send({ success: false, message: 'Unauthorized: Bad token' });
+      } else {
+        return res.status(200).send({ success: true, message: 'Authorized', currentUser });
+      }
+    });
+  } catch (err) {
+    return res.status(401).send({ success: false, message: 'Unauthorized: Bad token' });
+  }  
 };
