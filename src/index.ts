@@ -11,7 +11,7 @@ import { checkAuth } from "./controllers/check-auth.controller";
 
 import express from "express";
 import settingSchedule, { gettingSchedule } from "./methods/setSchedule";
-import jsonHelper from "./methods/jsonCreater";
+import jsonHelper, { busyDays, freeDays, jsonOpener } from "./methods/jsonCreater";
 const app = express();
 
 app.use(express.json());
@@ -30,7 +30,11 @@ const start = async () => {
   try {
     await dbConnect();
     //await settingSchedule("641b2d89900aa25346adbd67",new Date(),"6414c830e7477147fafa87e4");
-    await jsonHelper("641b2d89900aa25346adbd67");
+    //await jsonHelper("641b2d89900aa25346adbd67");
+    //const result=await jsonOpener();
+    //console.log(result);
+    await freeDays();
+    await busyDays();
     app.listen(process.env.PORT, () => {
       console.log(`Example app listening on port ${process.env.PORT}!`);
     });

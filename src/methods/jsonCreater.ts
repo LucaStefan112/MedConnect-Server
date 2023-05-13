@@ -11,7 +11,7 @@ export default async function jsonHelper(idDoc) {
         const scheduleResult = await gettingSchedule(idDoc);
         let schedules = [];
         for (var i = 0; i < scheduleResult.length; i = i + 2) {
-            const patient = await user.findById(scheduleResult[i+1]);
+            const patient = await user.findById(scheduleResult[i + 1]);
             let scheduleInstance = {
                 "date": scheduleResult[i],
                 "patient": patient
@@ -44,20 +44,45 @@ export default async function jsonHelper(idDoc) {
         //console.log(finalResult);
 
         //converting to JSON
-        const jsonData = JSON.stringify(finalResult,null,2);
+        const jsonData = JSON.stringify(finalResult, null, 2);
 
         //writing the data
-        fs.writeFile("data.json", jsonData, (error) => {
-            // throwing the error
-            // in case of a writing problem
-            if (error) {
-                // logging the error
-                console.error(error);
-
-                throw error;
-            }
-
-            console.log("data.json written correctly");
-        });
+        try {
+            // writing a JSON file synchronously
+            fs.writeFileSync("data.json", jsonData);
+          } catch (error) {
+            // logging the error
+            console.error(error);
+          
+            throw error;
+          }
+        console.log("data.json written correctly");
     }
+}
+
+export async function jsonOpener() {
+    const fs = require('fs');
+    try {
+        // reading a JSON file synchronously
+        const data = fs.readFileSync("data.json");
+        const finalResult=JSON.parse(data);
+        return finalResult;
+      } catch (error) {
+        // logging the error
+        console.error(error);
+      
+        throw error;
+      }
+}
+
+export async function freeDays() {
+    const freeDays= await jsonOpener();
+    console.log(freeDays.free);
+    return freeDays;
+}
+
+export async function busyDays() {
+    const busyDays= await jsonOpener();
+    console.log(busyDays.busy);
+    return busyDays;
 }
