@@ -13,22 +13,23 @@ export default async function settingCalendar(idDoc, dateStart: Date, dateFinish
                 doctor,
                 dates
             });
-            await calendar.save();
+           // await calendar.save();
             console.log("The instance is created");
+            return true;
         }
         else {
+            //
             const dates = await parserDate(dateStart, dateFinish);
-            var i;
-            for (i=0; i < dates.length; i++) {
+            /*for (var i; i < dates.length; i++) {
                 checker.dates.push(dates[i]);
             }
-            await calendar.findByIdAndUpdate(checker.id, { dates: checker.dates });
+            await calendar.findByIdAndUpdate(checker.id, { dates: checker.dates });*/
             console.log("The instance was updated");
         }
     }
 }
 
-async function parserDate(dateStart: Date, dateFinish: Date) {
+export async function parserDate(dateStart: Date, dateFinish: Date) {
     let finalDates = [];
     let hourStart = dateStart.getHours();
     let minStart = dateStart.getMinutes();
@@ -41,13 +42,14 @@ async function parserDate(dateStart: Date, dateFinish: Date) {
         var helper=new Date(dateStart);
         helper.setHours(hourStart);
         helper.setMinutes(minStart);
-        finalDates.push(helper)
+        finalDates.push(helper);
+        console.log(helper);
         minStart = (minStart + 30) % 60;
         if (minStart == 0) {
             hourStart++;
         }
     }
-    //console.log(finalDates);
+    console.log(finalDates);
     return finalDates;
 }
 
@@ -56,7 +58,7 @@ export async function gettingCalendar(idDoc) {
     const doc = await doctorChecker(idDoc);
     if (doc == true) {
         const checker = await calendar.find({ doctor: idDoc });
-        if(checker==null){
+        if(checker.length==0){ //don't check is checker is null, rather check if it's length is 0 because it's never null, but an empty array if there is no calendar
             console.log("No calendar");
             return null;
         }
