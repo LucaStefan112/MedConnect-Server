@@ -7,7 +7,8 @@
     "tsc:w": "node ./node_modules/typescript/bin/tsc -w",
     "start": "node ./build/index.js",
     "start:dev": "nodemon ./build/index.js",
-    "test": "jest"
+    "test": "jest --force-exit",
+    "coverage": "nyc npm run test"
   },
   "repository": {
     "type": "git",

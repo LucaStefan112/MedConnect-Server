@@ -5,6 +5,7 @@ import Calendar from "../models/calendar";
 
 export const register = async (req: Request, res: Response) => {
     const {doctor,dates} = req.body;
+    console.log(req.body);
     const caled= new Calendar({
         doctor,
         dates
