@@ -7,14 +7,15 @@
         "email": "a@ab.com",
         "password": "768cd446bee41f9c6fdc95b7ea66d4d731f52d1eb27b703d2ee372bddc63d23b",
         "role": "patient",
-        "phoneNumber": "001234",
+        "phoneNumber": "1234567890",
         "__v": 0,
         "firstName": "New",
-        "lastName": "Tester"
+        "lastName": "Tester",
+        "fullName": "Ion Popescu"
       }
     },
     {
-      "date": "2023-05-10T16:28:57.436Z",
+      "date": "2023-05-02T11:30:00.000Z",
       "patient": {
         "_id": "6414c830e7477147fafa87e4",
         "email": "georgepopescu12@gmail.com",
@@ -29,35 +30,27 @@
   ],
   "free": [
     {
-      "date": "2023-05-10T09:00:32.619Z",
+      "date": "2023-05-02T06:30:00.000Z",
       "patient": null
     },
     {
-      "date": "2023-05-10T09:00:32.619Z",
+      "date": "2023-05-02T07:00:00.000Z",
       "patient": null
     },
     {
-      "date": "2023-05-10T09:00:32.619Z",
+      "date": "2023-05-02T07:30:00.000Z",
       "patient": null
     },
     {
-      "date": "2023-05-10T09:00:32.619Z",
+      "date": "2023-05-02T08:00:00.000Z",
       "patient": null
     },
     {
-      "date": "2023-05-10T09:00:32.619Z",
+      "date": "2023-05-02T08:30:00.000Z",
       "patient": null
     },
     {
-      "date": "2023-05-10T09:00:32.619Z",
-      "patient": null
-    },
-    {
-      "date": "2023-05-10T09:00:32.619Z",
-      "patient": null
-    },
-    {
-      "date": "2023-05-10T09:00:32.619Z",
+      "date": "2023-05-02T09:00:00.000Z",
       "patient": null
     }
   ]

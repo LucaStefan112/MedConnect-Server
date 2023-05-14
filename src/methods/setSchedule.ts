@@ -34,7 +34,8 @@ export default async function settingSchedule(idDoc, date: Date, patient) { //sh
             //
             checker.dates.push(date);
             checker.patients.push(patient);
-            await schedule.findByIdAndUpdate(checker.id, { dates: checker.dates , patients:checker.patients});
+            console.log(checker.patients)
+            await schedule.findByIdAndUpdate(checker.id, { dates: checker.dates, patients: checker.patients });
             console.log("The instance was updated");
         }
     }
@@ -100,8 +101,8 @@ export async function gettingSchedule(idDoc) { //full schedule of a doctor
                 var i;
                 for (i = 0; i < time.dates.length; i++) {
                     returnArray[counter] = time.dates[i];
-                    returnArray[counter+1] = time.patients[i];
-                    counter=counter+2;
+                    returnArray[counter + 1] = time.patients[i];
+                    counter = counter + 2;
                 }
             }
             console.log("There are appointments")
@@ -110,3 +111,35 @@ export async function gettingSchedule(idDoc) { //full schedule of a doctor
         }
     }
 }
+
+export async function gettingScheduleDate(idDoc, date: Date) { //full schedule of a doctor
+    const doc = await doctorChecker(idDoc);
+    if (doc == true) {
+        const day = date.getDate();
+        const month = date.getMonth();
+        const checker = await schedule.find({ doctor: idDoc });
+        if (checker == null) {
+            console.log("No appointments today");
+            return null;
+        }
+        else {
+            var returnArray = [];
+            var counter = 0;
+            for (const time of checker) {
+                var i;
+                for (i = 0; i < time.dates.length; i++) {
+                    if (time.dates[i].getMonth() == month && time.dates[i].getDate() == day) {
+                        returnArray[counter] = time.dates[i];
+                        returnArray[counter + 1] = time.patients[i];
+                        counter = counter + 2;
+                    }
+                }
+            }
+            console.log("There are appointments")
+            //console.log(returnArray)
+            return returnArray;
+        }
+    }
+}
+
+

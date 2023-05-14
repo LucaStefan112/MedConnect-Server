@@ -76,3 +76,32 @@ export async function gettingCalendar(idDoc) {
         }
     }
 }
+
+export async function gettingCalendarDate(idDoc,date:Date) {
+    const doc = await doctorChecker(idDoc);
+    if (doc == true) {
+        const checker = await calendar.find({ doctor: idDoc });
+        const day = date.getDate();
+        const month = date.getMonth();
+        if(checker==null){
+            console.log("No calendar");
+            return null;
+        }
+        else{
+            var returnArray = [];
+            var counter=0;
+            for(const time of checker){
+                var i;
+                for(i=0;i<time.dates.length;i++){
+                    if (time.dates[i].getMonth() == month && time.dates[i].getDate() == day) {
+                        returnArray[counter] = time.dates[i];
+                        counter++;
+                    }
+                }
+            }
+            console.log("There is the calendar")
+            //console.log(returnArray)
+            return returnArray;
+        }
+    }
+}

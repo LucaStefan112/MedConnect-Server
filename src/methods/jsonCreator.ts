@@ -1,6 +1,6 @@
 import user from "../models/user";
-import { gettingCalendar } from "./setCalendar";
-import { doctorChecker, gettingSchedule } from "./setSchedule";
+import { gettingCalendar, gettingCalendarDate } from "./setCalendar";
+import { doctorChecker, gettingSchedule, gettingScheduleDate } from "./setSchedule";
 
 
 export default async function jsonHelper(idDoc) {
@@ -26,7 +26,7 @@ export default async function jsonHelper(idDoc) {
         let calendars = [];
         for (var j = 0; j < calendarResult.length; j++) {
             let calendarInstance = {
-                "date": calendarResult[i],
+                "date": calendarResult[j],
                 "patient": null
             };
             calendars.push(calendarInstance);
@@ -85,4 +85,62 @@ export async function busyDays() {
     const busyDays= await jsonOpener();
     console.log(busyDays.busy);
     return busyDays;
+}
+
+//for a specific day
+export async function jsonHelperDay(idDoc,date:Date) {
+    const doc = await doctorChecker(idDoc);
+    const fs = require('fs');
+    if (doc == true) {
+        //creating the schedule first -> busy
+        const scheduleResult = await gettingScheduleDate(idDoc,date);
+        let schedules = [];
+        for (var i = 0; i < scheduleResult.length; i = i + 2) {
+            const patient = await user.findById(scheduleResult[i + 1]);
+            let scheduleInstance = {
+                "date": scheduleResult[i],
+                "patient": patient
+            };
+            schedules.push(scheduleInstance);
+        }
+        //testing
+        //console.log(schedules);
+
+        //creating the calendar of the doc ( available days) -> free
+        const calendarResult = await gettingCalendarDate(idDoc,date);
+        let calendars = [];
+        for (var j = 0; j < calendarResult.length; j++) {
+            let calendarInstance = {
+                "date": calendarResult[j],
+                "patient": null
+            };
+            calendars.push(calendarInstance);
+        }
+
+        //testing
+        //console.log(calendars);
+
+        let finalResult = {
+            "busy": schedules,
+            "free": calendars
+        };
+
+        //testing
+        //console.log(finalResult);
+
+        //converting to JSON
+        const jsonData = JSON.stringify(finalResult, null, 2);
+
+        //writing the data
+        try {
+            // writing a JSON file synchronously
+            fs.writeFileSync("data.json", jsonData);
+          } catch (error) {
+            // logging the error
+            console.error(error);
+          
+            throw error;
+          }
+        console.log("data.json written correctly");
+    }
 }
