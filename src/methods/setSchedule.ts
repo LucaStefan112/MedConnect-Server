@@ -63,19 +63,21 @@ export async function gettingDay(idDoc, date: Date) { //appointments  specific d
         const checker = await gettingSchedule(idDoc);
         if (checker == null) {
             console.log("No appointments");
+            return false;
         }
         else {
             var i;
             var returnArray = [];
             var counter = 0;
             for (i = 0; i < checker.length; i++) {
-                if (checker[i].getMonth() == month && checker[i].getDate() == day) {
+                if (checker[i] instanceof Date && checker[i].getMonth() == month && checker[i].getDate() == day) {
                     returnArray[counter] = checker[i];
                     counter++;
                 }
             }
             if (counter == 0) {
                 console.log(" no exist ");
+                return false;
             }
             else {
                 console.log("There are appointments")
