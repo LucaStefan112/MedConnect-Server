@@ -7,7 +7,8 @@
     "tsc:w": "node ./node_modules/typescript/bin/tsc -w",
     "start": "node ./build/index.js",
     "start:dev": "nodemon ./build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --force-exit",
+    "coverage": "nyc npm run test"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.1",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.14.6",
     "express": "^4.18.2",
