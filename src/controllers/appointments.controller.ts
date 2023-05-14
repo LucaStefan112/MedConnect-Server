@@ -36,7 +36,7 @@ export const addAppointment = async (req: Request, res: Response) => {
   }
 
   try {
-    const newAppointent = new Appointment({
+    const newAppointment = new Appointment({
       patient: user,
       doctor,
       date,
@@ -44,9 +44,9 @@ export const addAppointment = async (req: Request, res: Response) => {
       isActive: true,
     });
 
-    await newAppointent.save();
+    await newAppointment.save();
 
-    return res.status(200).send({ success: true, message: 'appointment-added' });
+    return res.status(200).send({ success: true, message: 'appointment-added', appointment: newAppointment });
   } catch (err) {
     return res.status(400).send({ success: false, message: 'Failed to add appointment' });
   }

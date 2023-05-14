@@ -31,7 +31,7 @@ app.use("/doctors", doctorRouter)
 app.get('/specialisations', async (req, res) => {
   const specialisations = await Specialisation.find();
 
-  res.status(200).send({ success: true, specialisations }); 
+  res.status(200).send({ success: true, specialisations });
   return res.end();
 });
 
@@ -47,3 +47,5 @@ const start = async () => {
 };
 
 start();
+
+export default app;
