@@ -25,14 +25,56 @@ describe("jsonHelper", () => {
 
 
 describe("jsonOpener", () => {
+    beforeAll(async () => {
+        //we connect to the database
+        await dbConnect();
+    });
 
+    it("should open a json file", async () => {
+        const logSpy = jest.spyOn(console, 'log');
+        await jsonOpener();
+        expect(logSpy).toHaveBeenCalledWith('data.json written correctly');
+    });
+
+    afterAll(async () => {
+        //we close the connection to the database
+        await mongoose.connection.close();
+    });
 });
 
 
 describe("freeDays", () => {
+    beforeAll(async () => {
+        //we connect to the database
+        await dbConnect();
+    });
 
+    it("should get the free days", async () => {
+        const logSpy = jest.spyOn(console, 'log');
+        await jsonOpener();
+        expect(logSpy).toHaveBeenCalledWith('data.json written correctly');
+    });
+
+    afterAll(async () => {
+        //we close the connection to the database
+        await mongoose.connection.close();
+    });
 });
 
 describe("busyDays", () => {
+    beforeAll(async () => {
+        //we connect to the database
+        await dbConnect();
+    });
 
+    it("should get the busy days", async () => {
+        const logSpy = jest.spyOn(console, 'log');
+        await jsonOpener();
+        expect(logSpy).toHaveBeenCalledWith('data.json written correctly');
+    });
+
+    afterAll(async () => {
+        //we close the connection to the database
+        await mongoose.connection.close();
+    });
 });

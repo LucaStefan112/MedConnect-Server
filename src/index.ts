@@ -12,6 +12,7 @@ import { checkAuth } from "./controllers/check-auth.controller";
 import express from "express";
 import settingSchedule, { gettingSchedule } from "./methods/setSchedule";
 import jsonHelper, { busyDays, freeDays, jsonOpener } from "./methods/jsonCreator";
+import calendarRouter from "./routes/calendar";
 const app = express();
 
 app.use(express.json());
@@ -25,7 +26,7 @@ app.use("/appointments", appointmentRouter);
 app.use("/users", userRouter);
 app.use("/analyses", analysisRouter);
 app.use("/schedule",scheduleRouter);
-
+app.use("/calendar", calendarRouter);
 const start = async () => {
   try {
     await dbConnect();

@@ -13,27 +13,84 @@
         "lastName": "Tester",
         "fullName": "Ion Popescu"
       }
+    },
+    {
+      "date": "2023-05-08T15:15:15.000Z",
+      "patient": {
+        "_id": "641444ccb84980eb625d2fdf",
+        "email": "a@ab.com",
+        "password": "768cd446bee41f9c6fdc95b7ea66d4d731f52d1eb27b703d2ee372bddc63d23b",
+        "role": "patient",
+        "phoneNumber": "1234567890",
+        "__v": 0,
+        "firstName": "New",
+        "lastName": "Tester",
+        "fullName": "Ion Popescu"
+      }
+    },
+    {
+      "date": "2023-05-08T15:15:15.000Z",
+      "patient": {
+        "_id": "641444ccb84980eb625d2fdf",
+        "email": "a@ab.com",
+        "password": "768cd446bee41f9c6fdc95b7ea66d4d731f52d1eb27b703d2ee372bddc63d23b",
+        "role": "patient",
+        "phoneNumber": "1234567890",
+        "__v": 0,
+        "firstName": "New",
+        "lastName": "Tester",
+        "fullName": "Ion Popescu"
+      }
+    },
+    {
+      "date": "2023-05-08T15:15:15.000Z",
+      "patient": {
+        "_id": "641444ccb84980eb625d2fdf",
+        "email": "a@ab.com",
+        "password": "768cd446bee41f9c6fdc95b7ea66d4d731f52d1eb27b703d2ee372bddc63d23b",
+        "role": "patient",
+        "phoneNumber": "1234567890",
+        "__v": 0,
+        "firstName": "New",
+        "lastName": "Tester",
+        "fullName": "Ion Popescu"
+      }
+    },
+    {
+      "date": "2023-05-08T15:15:15.000Z",
+      "patient": {
+        "_id": "641444ccb84980eb625d2fdf",
+        "email": "a@ab.com",
+        "password": "768cd446bee41f9c6fdc95b7ea66d4d731f52d1eb27b703d2ee372bddc63d23b",
+        "role": "patient",
+        "phoneNumber": "1234567890",
+        "__v": 0,
+        "firstName": "New",
+        "lastName": "Tester",
+        "fullName": "Ion Popescu"
+      }
     }
   ],
   "free": [
     {
-      "date": "2023-05-08T18:00:00.000Z",
       "patient": null
     },
     {
-      "date": "2023-05-08T18:00:00.000Z",
       "patient": null
     },
     {
-      "date": "2023-05-08T18:00:00.000Z",
       "patient": null
     },
     {
-      "date": "2023-05-08T18:00:00.000Z",
       "patient": null
     },
     {
-      "date": "2023-05-08T18:00:00.000Z",
+      "patient": null
+    },
+    {
+      "patient": null
+    },
+    {
       "patient": null
     }
   ]
