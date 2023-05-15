@@ -16,7 +16,7 @@ doctorRouter.get('/specialisation/:_id', async (req, res) => {
       return res.status(404).send({ success: false, message: "Specialisation not found" });
     }
 
-    const doctors = await User.find({ role: UserRoles.Doctor, specialisation: specialisation._id });
+    const doctors = await User.find({ role: UserRoles.Doctor, specialisation: _id });
 
     if(doctors.length === 0) {
       return res.status(404).send({ success: false, message: "No doctors found" });

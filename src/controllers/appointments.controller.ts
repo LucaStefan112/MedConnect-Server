@@ -12,8 +12,7 @@ export const getAppointments = async (req: Request, res: Response) => {
     return res.status(404).send({ success: false, message: 'User not found' });
   }
 
-  // get all appointments for patient with the doctor and specialisation populated
-  const appointments = await Appointment.find({ patient: user }).populate(UserRoles.Doctor).populate('specialisation');
+  let appointments = await Appointment.find({ patient: user }).populate(UserRoles.Doctor);
 
   return res.status(200).send({ success: true, message: 'appointments-found', appointments });
 };
@@ -58,7 +57,7 @@ export const getAppointment = async (req: Request, res: Response) => {
     return res.status(400).send({ success: false, message: 'Bad request' });
   }
 
-  const appointment = await Appointment.findById(id).populate(UserRoles.Doctor);
+  const appointment = await Appointment.findById(id).populate(UserRoles.Doctor).populate('doctor');
 
   if (!appointment) {
     return res.status(404).send({ success: false, message: 'Appointment not found' });
@@ -96,4 +95,34 @@ export const deleteAppointment = async (req: Request, res: Response) => {
   }
 
   return res.status(200).send({ success: true, message: "Deleted appointment" });
+};
+
+export const setAppointmentMessage = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).send({ success: false, message: 'Bad request' });
+  }
+
+  const { message } = req.body;
+
+  if (!message) {
+    return res.status(400).send({ success: false, message: 'No message' });
+  }
+
+  const appointment = await Appointment.findById(id);
+
+  if (!appointment) {
+    return res.status(404).send({ success: false, message: 'Appointment not found' });
+  }
+
+  appointment.message = message;
+
+  try {
+    await appointment.save();
+  } catch (err) {
+    return res.status(400).send({ success: false, message: 'Failed to save message' });
+  }
+
+  return res.status(200).send({ success: true, message: 'Message saved' });
 };
