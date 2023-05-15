@@ -1,45 +1,46 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import { register } from "../controllers/calendar.controller";
-import Calendar from "../models/calendar";
+import mongoose from 'mongoose';
+import {dbConnect} from '../db/connection';
 
-jest.mock("../models/calendar", () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(() => ({
-    save: jest.fn(),
-  })),
-}));
+describe('register', () => {
+  let req: Partial<Request>;
+  let res: Partial<Response>;
 
-describe("Calendar Controller", () => {
-  let req: Request;
-  let res: Response;
+  beforeAll(async () => {
+    //we connect to the database
+    await dbConnect();
+  });
 
   beforeEach(() => {
     req = {
       body: {
-        doctor: "John Doe",
-        dates: ["2023-05-01", "2023-05-02"],
+        doctor: '6414c830e7477147fafa87e4',
+        dates: ['2023-05-01', '2023-05-02'],
       },
-    } as Request;
+    };
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-    } as any;
+    };
   });
+
+  it('should create a new calendar and return a success message', async () => {
+    await register(req as Request, res as Response);
+
+    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'Calendar created successfully',
+    });
+  }, 10000);
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it("should create a new calendar and return a success message", async () => {
-    const saveMock = jest.fn();
-    Calendar.prototype.save = saveMock;
-
-    await register(req, res);
-
-    expect(saveMock).toHaveBeenCalledTimes(1);
-    expect(res.status).toHaveBeenCalledWith(201);
-    expect(res.json).toHaveBeenCalledWith({
-      message: "Calendar created successfully",
-    });
+  afterAll(async () => {
+    //we close the connection to the database
+    await mongoose.connection.close();
   });
+
 });

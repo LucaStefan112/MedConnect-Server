@@ -13,7 +13,7 @@ export default async function settingCalendar(idDoc, dateStart: Date, dateFinish
                 doctor,
                 dates
             });
-           // await calendar.save();
+            await calendar.save();
             console.log("The instance is created");
             return true;
         }
@@ -25,6 +25,7 @@ export default async function settingCalendar(idDoc, dateStart: Date, dateFinish
             }
             await calendar.findByIdAndUpdate(checker.id, { dates: checker.dates });*/
             console.log("The instance was updated");
+            return null;
         }
     }
 }

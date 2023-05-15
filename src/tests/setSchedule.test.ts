@@ -22,7 +22,7 @@ describe("doctorChecker", () => {
     });
 });
 
-/*describe("settingSchedule", () => {
+describe("settingSchedule", () => {
     beforeAll(async () => {
         //we connect to the database
         await dbConnect();
@@ -50,7 +50,7 @@ describe("doctorChecker", () => {
         //we close the connection to the database
         await mongoose.connection.close();
     });
-});*/
+});
 
 describe("gettingHour", () => {
   beforeAll(async () => {

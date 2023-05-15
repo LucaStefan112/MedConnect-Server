@@ -70,7 +70,6 @@ export async function jsonOpener() {
       } catch (error) {
         // logging the error
         console.error(error);
-      
         throw error;
       }
 }
