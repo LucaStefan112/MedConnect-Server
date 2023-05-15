@@ -18,7 +18,7 @@ export interface IUser {
   city: string;
   completeAddress: string;  
   phoneNumber: string;
-  specialization?: ISpecialisation;
+  specialization?: string;
 }
 
 export interface IUserModel extends IUser, mongoose.Document { }
@@ -66,8 +66,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
   },
   specialisation: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Specialisation",
+    type: String,
     required: false,
   },
   sex: {

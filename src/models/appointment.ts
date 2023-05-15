@@ -11,6 +11,7 @@ export interface IAppointment {
   type: string;
   meetingLink: string;
   isActive: boolean;
+  message: string;
   specialization: ISpecialisation;
 }
 
@@ -47,9 +48,12 @@ const appointmentSchema = new mongoose.Schema({
     default: true,
   },
   specialisation: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Specialisation",
+    type: String,
     required: true,
+  },
+  message: {
+    type: String,
+    required: false,
   },
 });
 

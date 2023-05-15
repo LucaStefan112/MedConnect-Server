@@ -4,6 +4,7 @@ import {
   addAppointment,
   deleteAppointment,
   getAppointment,
+  setAppointmentMessage,
 } from "../controllers/appointments.controller";
 
 // middlewares
@@ -15,5 +16,6 @@ appointmentRouter.get("/", validateToken, getAppointments);
 appointmentRouter.post("/", validateToken, addAppointment);
 appointmentRouter.get("/:id", validateToken, getAppointment);
 appointmentRouter.delete("/:id", validateToken, deleteAppointment);
+appointmentRouter.put("/:id/message", validateToken, setAppointmentMessage);
 
 export default appointmentRouter;
